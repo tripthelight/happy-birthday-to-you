@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-    <!-- <Home /> -->
     <router-link to="/">main</router-link>
     <router-view></router-view>
   </div>
