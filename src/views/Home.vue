@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1>HAPPY</h1>
+    <h1>Home</h1>
   </div>
 </template>
 
@@ -9,3 +9,11 @@ export default {
   name: 'Home'
 }
 </script>
+
+<style lang="scss" scoped>
+.home {
+  position: relative;
+  padding: 12px 12px 24px;
+  box-sizing: border-box;
+}
+</style>
