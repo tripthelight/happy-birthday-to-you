@@ -1,11 +1,11 @@
 <template>
-  <div :class="['menuWrap', state?'open':'close']">
-    <btn-x class="btnClose" />
+  <div :class="['menuWrap']">
+    <btn-x class="btnClose" @click="updateState" />
     <ul>
       <li>menu1</li>
       <li>menu2</li>
     </ul>
-    <div class="bg"></div>
+    <div class="bg" @click="updateState"></div>
   </div>
 </template>
 
@@ -16,14 +16,15 @@ export default {
   components: {
     BtnX
   },
+  props: ['menuState'],
   data: function () {
     return {
       state: false
     }
   },
   methods: {
-    menuEvt () {
-
+    updateState: function () {
+      this.$emit('menuEvt', 'hide')
     }
   }
 }
@@ -32,7 +33,7 @@ export default {
 <style lang="scss" scoped>
 .menuWrap {
   position: fixed;
-  display: block;
+  display: none;
   width: 100%;
   height: 100%;
   left: 0;
@@ -85,10 +86,10 @@ export default {
     background-color: rgba(0,0,0,0.8);
     z-index: 990;
   }
-  &.open {
+  &.show {
     display: block;
   }
-  &.close {
+  &.hide {
     display: none;
   }
 }
