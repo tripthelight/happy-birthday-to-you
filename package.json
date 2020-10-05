@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "f_d": "vue-cli-service build && firebase deploy"
+    "firebase:deploy": "vue-cli-service build && firebase deploy"
   },
   "dependencies": {
     "@babel/polyfill": "^7.10.4",
