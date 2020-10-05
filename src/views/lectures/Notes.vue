@@ -15,7 +15,9 @@
     >
       <li>{{ item.title }}</li>
       <li>{{ item.content }}</li>
-      <li><button @click="put(item)">수정</button></li>
+      <li>{{ item.id }}</li>
+      <li><button @click="put(item.id)">수정</button></li>
+      <li><button @click="del(item.id)">삭제</button></li>
     </ul>
   </div>
 </template>
@@ -29,24 +31,48 @@ export default {
     items: []
   }),
   mounted () {
+    this.get()
   },
   methods: {
-    post () {
-      this.items.push({
+    async post () {
+      // this.items.push({
+      //   title: this.title,
+      //   content: this.content
+      // })
+      const r = await this.$firebase.firestore().collection('notes').add({
         title: this.title,
         content: this.content
       })
+      console.log(r)
       this.title = ''
       this.content = ''
+      await this.get()
     },
-    get () {
-
+    async get () {
+      const citiesRef = this.$firebase.firestore().collection('notes')
+      const snapshot = await citiesRef.get()
+      this.items = []
+      snapshot.forEach(doc => {
+        console.log(doc.id, '=>', doc.data())
+        const { title, content } = doc.data()
+        this.items.push({
+          title, content, id: doc.id
+        })
+      })
+      console.log(snapshot)
     },
-    put () {
-
+    async put (id) {
+      const r = await this.$firebase.firestore().collection('notes').doc(id).set({
+        title: this.title,
+        content: this.content
+      })
+      await this.get()
+      console.log(r)
     },
-    del () {
-
+    async del (id) {
+      const r = await this.$firebase.firestore().collection('notes').doc(id).delete()
+      await this.get()
+      console.log(r)
     }
   }
 }
