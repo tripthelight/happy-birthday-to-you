@@ -1,6 +1,12 @@
 const app = require('express')()
+require('express-async-errors')
+const cors = require('cors')
 
-app.post('/', (req, res) => {
+app.use(cors())
+
+app.use(require('../middlewares/verifyToken'))
+
+app.post('/', async (req, res) => {
   res.send('post ok')
 })
 
@@ -18,5 +24,7 @@ app.put('/:id', (req, res) => {
 app.delete('/:id', (req, res) => {
   res.send('delete ok ' + req.params.id)
 })
+
+app.use(require('../middlewares/error'))
 
 module.exports = app
