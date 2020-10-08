@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import App from './App.vue'
 import './assets/global.css'
-import { router } from './routes/index.js'
-import './plugins/firebase'
-import './plugins/axios'
+import router from './routes/index'
+import store from './store/store'
+import './plugins'
 import '../error'
 
 Vue.config.productionTip = false
 
 new Vue({
-  render: h => h(App),
-  router
+  router,
+  store,
+  render: h => h(App)
 }).$mount('#app')

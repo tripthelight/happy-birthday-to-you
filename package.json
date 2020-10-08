@@ -2,23 +2,28 @@
   "name": "happy-birthday-to-you",
   "version": "0.1.0",
   "private": true,
+  "description": "## Project setup ``` npm install ```",
+  "author": "",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "firebase:deploy": "vue-cli-service build && firebase deploy"
   },
+  "main": "babel.config.js",
   "dependencies": {
     "@babel/polyfill": "^7.10.4",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
+    "es6-promise": "^4.2.8",
     "firebase": "^7.22.0",
     "vue": "^2.6.11",
+    "vue-progressbar": "^0.7.5",
     "vue-router": "^3.4.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
-    "@vue/cli-plugin-eslint": "^4.5.2",
+    "@vue/cli-plugin-eslint": "^4.5.6",
     "@vue/cli-service": "~4.4.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
@@ -54,5 +59,14 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/tripthelight/happy-birthday-to-you/issues"
+  },
+  "homepage": "https://github.com/tripthelight/happy-birthday-to-you#readme",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tripthelight/happy-birthday-to-you.git"
+  }
 }

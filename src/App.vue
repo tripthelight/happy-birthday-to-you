@@ -5,7 +5,11 @@
       <!-- <router-link to="/">main</router-link>
       <router-link to="/About">about</router-link> -->
       <router-view></router-view>
+      <vue-progress-bar></vue-progress-bar>
+      <div v-if="!$isFirebaseAuth">로딩중</div>
     </div>
+    <!-- <p>{{ $store.state.user ? $store.state.user.displayName : '아직 로그인 안함' }}</p>
+    <p>{{ $store.state.token ? $store.state.token : '아직 로그인 안함' }}</p> -->
   </div>
 </template>
 
