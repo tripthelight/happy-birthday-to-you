@@ -3,10 +3,10 @@
     <h1>{{ swaplogin?'회원가입':'로그인' }}</h1>
     <!-- email password signin -->
     <div class="loginWrap">
-      <Input-Basic iptTitle="FIRST NAME" iptType="text" v-if="swaplogin" />
-      <Input-Basic iptTitle="LAST NAME" iptType="text" v-if="swaplogin" />
       <Input-Basic iptTitle="EMAIL" iptType="text" />
       <Input-Basic iptTitle="PASSWORD" iptType="password" />
+      <Input-Basic iptTitle="FIRST NAME" iptType="text" v-if="swaplogin" />
+      <Input-Basic iptTitle="LAST NAME" iptType="text" v-if="swaplogin" />
       <Input-Date iptTitle="BIRTHDAY" iptType="date" v-if="swaplogin" />
     </div>
 

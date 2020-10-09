@@ -44,18 +44,25 @@ export default {
       errChk: false,
       delState: false,
       form: {
-        firstName: '',
-        lastName: '',
         email: '',
-        password: ''
+        password: '',
+        firstName: '',
+        lastName: ''
       }
     }
   },
   methods: {
+    init () {
+      if (this.vModel === '') return
+      if (this.vModel.length > 0) {
+        this.iptLength = this.vModel
+        this.vModelChk(this.iptLength)
+      }
+    },
     focusFn () {
       this.focusState = true
       this.effChk = false
-      if (this.iptLength.length >= 1) {
+      if (this.iptLength.length > 0) {
         this.delState = true
       } else {
         this.delState = false
@@ -103,32 +110,38 @@ export default {
     vModelFn () {
       switch (this.iptTitle) {
         case 'FIRST NAME' :
-          return this.form.firstName
+          this.vModel = this.form.firstName
+          return
         case 'LAST NAME' :
-          return this.form.lastName
+          this.vModel = this.form.lastName
+          return
         case 'EMAIL' :
-          return this.form.email
+          this.vModel = this.form.email
+          return
         case 'PASSWORD' :
-          return this.form.password
+          this.vModel = this.form.password
+          return
         default :
-          return ''
+          this.vModel = ''
       }
     },
     checkExist (event) {
       this.iptLength = event.target.value
-      console.log('iptLength : ' + this.iptLength)
       if (this.iptLength.length >= 1) {
         this.delState = true
       } else {
         this.delState = false
       }
+      this.vModelChk(this.iptLength)
+    },
+    vModelChk (iptL) {
       if (this.iptTitle === 'FIRST NAME' || this.iptTitle === 'LAST NAME') {
-        if (this.iptLength.length === 0) {
+        if (iptL.length === 0) {
           this.errMsg = '1글자 이상 입력해주세요'
           this.focusState = true
           this.effChk = false
           this.errChk = true
-        } else if (this.iptLength.length >= 11) {
+        } else if (iptL.length >= 11) {
           this.errMsg = '10글자 이하로 입력해주세요'
           this.focusState = true
           this.effChk = false
@@ -139,8 +152,8 @@ export default {
         }
       }
       if (this.iptTitle === 'EMAIL') {
-        this.CheckEmail(this.iptLength)
-        if (this.iptLength.length < 10) {
+        this.CheckEmail(iptL)
+        if (iptL.length < 10) {
           this.errMsg = '10글자 이상 입력해주세요'
           this.focusState = true
           this.effChk = false
@@ -156,12 +169,12 @@ export default {
         }
       }
       if (this.iptTitle === 'PASSWORD') {
-        if (this.iptLength.length <= 5) {
+        if (iptL.length <= 5) {
           this.errMsg = '6글자 이상 입력해주세요'
           this.focusState = true
           this.effChk = false
           this.errChk = true
-        } else if (this.iptLength.length >= 31) {
+        } else if (iptL.length >= 31) {
           this.errMsg = '30글자 이하로 입력해주세요'
           this.focusState = true
           this.effChk = false
@@ -171,11 +184,6 @@ export default {
           this.errChk = false
         }
       }
-      // if (this.iptLength.length === 0) {
-      //   this.errMsg = ''
-      //   this.effChk = false
-      //   this.errChk = false
-      // }
     },
     CheckEmail (str) {
       const regEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -197,6 +205,11 @@ export default {
     }
   },
   mounted () {
+    this.vModelFn()
+    // console.log('11 this.vModel.length : ' + this.vModel.length)
+    this.init()
+    // console.log('22 this.vModel : ' + this.vModel)
+    // console.log('33 this.iptLength : ' + this.iptLength)
   }
 }
 </script>

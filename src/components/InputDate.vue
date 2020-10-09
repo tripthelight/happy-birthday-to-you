@@ -1,12 +1,18 @@
 <template>
-  <div :class="['formBlock', focusState?'focus':'blur']">
+  <div :class="['formBlock', focusState?'focus':'blur', effChk?'effEnd':'', errChk?'err':'']">
     <span class="title">{{ iptTitle }}</span>
     <input
       :type="iptType"
-      v-model="date"
+      v-model="vModel"
       @focus="focusFn"
+      @click="focusFn"
+      @blur="blurFn($event)"
+      @input="checkExist($event)"
+      :max="today"
     />
+    <span class="bottomLineInit"></span>
     <span class="bottomLine"></span>
+    <span class="errMsg">{{ errMsg }}</span>
   </div>
 </template>
 
@@ -21,15 +27,65 @@ export default {
     return {
       focusState: false,
       iptLength: '',
-      date: new Date().toISOString().substr(0, 10)
+      vModel: '',
+      errMsg: '',
+      effChk: false,
+      errChk: false,
+      date: new Date().toISOString().substring(0, 10),
+      today: new Date().toISOString().substring(0, 10),
+      form: {
+        birthday: new Date().toISOString().substring(0, 10)
+      }
     }
-  },
-  mounted () {
   },
   methods: {
     focusFn () {
       this.focusState = true
+      this.effChk = false
+    },
+    blurFn (event) {
+      if (this.iptLength.length < 10) {
+        console.log('del1')
+        this.errMsg = ''
+        this.focusState = false
+        this.effChk = false
+        this.errChk = false
+      } else if (this.iptLength <= this.date) {
+        this.errMsg = ''
+        this.focusState = true
+        this.effChk = true
+        this.errChk = false
+      }
+    },
+    checkExist (event) {
+      this.iptLength = event.target.value
+      // console.log('iptLength : ' + this.iptLength)
+      // console.log('this.date : ' + this.date)
+      // console.log('this.today : ' + this.today)
+      console.log('iptLength.length : ' + this.iptLength.length)
+      if (this.iptLength.length < 10) {
+        console.log('del2')
+        this.errMsg = ''
+        this.focusState = false
+        this.effChk = false
+        this.errChk = false
+      } else if (this.iptLength > this.date && this.iptLength.length === 10) {
+        // console.log('err')
+        this.errMsg = '오늘 날짜까지만 선택 가능합니다.'
+        this.errChk = true
+      }
+      if (this.iptLength <= this.date && this.iptLength.length === 10) {
+        console.log('OK')
+        this.errMsg = ''
+        this.errChk = false
+      }
+    },
+    vModelFn () {
+      this.vModel = this.form.birthday
     }
+  },
+  mounted () {
+    this.vModelFn()
   }
 }
 </script>
@@ -42,17 +98,26 @@ export default {
   position: relative;
   width: 100%;
   padding: 20px 0 0 0;
-  margin: 10px 0 0 0;
+  margin: 9px 0 0 0;
   span {
     display: block;
     &.title {
       position: absolute;
       left: 0;
-      top: 20px;
+      top: 24px;
       font-size: 16px;
       color: #999;
       z-index: 1;
       transition: top .2s, font-size .2s, color .2s;
+    }
+    &.bottomLineInit {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 1px;
+      background-color: #999;
+      z-index: 10;
     }
     &.bottomLine {
       position: absolute;
@@ -74,10 +139,11 @@ export default {
     padding: 5px 0;
     font-size: 14px;
     background-color: transparent;
-    font-size: 0;
+    font-size: 14px;
     min-height: 17px;
+    opacity: 0;
     z-index: 9;
-    &:focus {
+    /* &:focus {
       + span {
         &.bottomLine {
           width: 100%;
@@ -86,17 +152,74 @@ export default {
           transition: width .2s, left .2s;
         }
       }
-    }
+    } */
+  }
+  .errMsg {
+    position: absolute;
+    left: 0;
+    bottom: -16px;
+    width: 100%;
+    font-size: 10px;
+    color: #ff0000;
   }
   &.focus {
     .title {
-      top: 4px;
-      font-size: 9px;
+      top: 8px;
+      font-size: 10px;
       color: #000;
       transition: top .2s, font-size .2s, color .2s;
     }
     input {
       font-size: 14px;
+      opacity: 1;
+    }
+    span {
+      &.bottomLine {
+        width: 100%;
+        left: 0;
+        background-color: #000;
+        transition: width .2s, left .2s;
+      }
+    }
+  }
+  &.effEnd {
+    .title {
+      top: 8px;
+      font-size: 10px;
+      color: #000;
+      transition: top .2s, font-size .2s, color .2s;
+    }
+    input {
+      font-size: 14px;
+    }
+    span {
+      &.bottomLine {
+        left: 50%;
+        bottom: 0;
+        width: 0;
+        background-color: #555;
+        transition: width .2s, left .2s;
+      }
+    }
+  }
+  &.err {
+    .title {
+      top: 8px;
+      font-size: 10px;
+      color: #FF0000;
+      transition: top .2s, font-size .2s, color .2s;
+    }
+    input {
+      color: #FF0000;
+      transition: color .2s;
+    }
+    span {
+      &.bottomLine {
+        width: 100%;
+        left: 0;
+        background-color: #FF0000;
+        transition: width .2s, left .2s;
+      }
     }
   }
 }
