@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-    <p>HOME</p>
-    <p>HOME2</p>
+    <div class="myWrap">
+      <button @click="myPage">click</button>
+    </div>
     <div class="btnWrap">
       <button @click="signOut">
         <svg viewBox="0 0 512 512">
@@ -44,6 +45,9 @@ export default {
         // An error happened.
         console.log(error)
       })
+    },
+    myPage () {
+      this.$router.push({ path: 'MyPage' })
     }
   }
 }
@@ -54,10 +58,25 @@ export default {
   position: relative;
   padding: 0;
   box-sizing: border-box;
+  .myWrap {
+    position: fixed;
+    right: 24px;
+    top: 24px;
+    width: 24px;
+    height: 24px;
+    z-index: 900;
+    button {
+      width: 24px;
+      height: 24px;
+      background-color: #fff;
+      color: #000;
+      border: 0 none;
+    }
+  }
   .btnWrap {
     position: relative;
     display: block;
-    padding: 20px 0 0 0;
+    padding: 90px 0 0 0;
     button {
       position: relative;
       width: 100%;

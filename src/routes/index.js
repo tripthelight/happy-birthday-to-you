@@ -6,6 +6,7 @@ import Notes from '../views/lectures/Notes.vue'
 import Sign from '../views/Sign.vue'
 import Axios from '../views/lectures/Axios.vue'
 import Vuex from '../views/lectures/Vuex.vue'
+import MyPage from '../views/MyPage.vue'
 import E404 from '../views/e404.vue'
 
 Vue.use(VueRouter)
@@ -43,6 +44,11 @@ const router = new VueRouter({
       path: '/Vuex',
       name: 'Vuex',
       component: Vuex
+    },
+    {
+      path: '/MyPage',
+      name: 'MyPage',
+      component: MyPage
     },
     {
       path: '/*',

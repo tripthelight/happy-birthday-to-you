@@ -27,6 +27,7 @@ export default new Vuex.Store({
       user.getIdToken()
         .then(token => {
           commit('setToken', token)
+          console.log(user)
         })
     }
   }

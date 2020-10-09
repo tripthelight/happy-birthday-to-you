@@ -3,6 +3,11 @@
     padding: 0;
     text-align: left;
 }
+*:focus {
+    outline:none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+}
 ul, li, ol, dl, dt, dd {
     list-style: none;
 }
@@ -10,4 +15,8 @@ img {
     width: 100%;
     height: auto;
     vertical-align: top;
+}
+button {
+    background-color: transparent;
+    border: 0 none;
 }
