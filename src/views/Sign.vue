@@ -237,10 +237,9 @@ export default {
     async createWithEmailAndPassword () {
       await this.$firebase.auth().createUserWithEmailAndPassword(this.form.emailSign, this.form.passwordSign)
       const user = this.$firebase.auth().currentUser
-      const result = await user.updateProfile({
+      await user.updateProfile({
         displayName: `${this.form.firstNameSign} ${this.form.lastNameSign}`
       })
-      console.log(result)
     },
     async signInWithEmailAndPassword () {
       await this.$firebase.auth().signInWithEmailAndPassword(this.form.emailLogin, this.form.passwordLogin)
