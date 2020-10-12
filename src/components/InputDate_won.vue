@@ -45,39 +45,38 @@ export default {
     },
     blurFn (event) {
       if (this.iptLength.length < 10) {
-        console.log('del1')
-        this.errMsg = ''
+        this.errMsg = '생년월일을 선택해주세요'
         this.focusState = false
         this.effChk = false
-        this.errChk = false
+        this.errChk = true
+        this.$emit('birthdayEff', false)
       } else if (this.iptLength <= this.date) {
         this.errMsg = ''
         this.focusState = true
         this.effChk = true
         this.errChk = false
+        this.$emit('birthdayEff', true)
       }
     },
     checkExist (event) {
       this.iptLength = event.target.value
-      // console.log('iptLength : ' + this.iptLength)
-      // console.log('this.date : ' + this.date)
-      // console.log('this.today : ' + this.today)
-      console.log('iptLength.length : ' + this.iptLength.length)
+      this.$emit('birthdayEff', false)
       if (this.iptLength.length < 10) {
-        console.log('del2')
-        this.errMsg = ''
+        this.errMsg = '생년월일을 선택해주세요'
         this.focusState = false
         this.effChk = false
-        this.errChk = false
+        this.errChk = true
+        this.$emit('birthdayEff', false)
       } else if (this.iptLength > this.date && this.iptLength.length === 10) {
-        // console.log('err')
         this.errMsg = '오늘 날짜까지만 선택 가능합니다.'
         this.errChk = true
+        this.$emit('birthdayEff', false)
       }
       if (this.iptLength <= this.date && this.iptLength.length === 10) {
-        console.log('OK')
         this.errMsg = ''
         this.errChk = false
+        this.$emit('birthdayRes', this.iptLength)
+        this.$emit('birthdayEff', true)
       }
     },
     vModelFn () {
@@ -191,6 +190,7 @@ export default {
     }
     input {
       font-size: 14px;
+      opacity: 1;
     }
     span {
       &.bottomLine {
@@ -211,6 +211,7 @@ export default {
     }
     input {
       color: #FF0000;
+      opacity: 1;
       transition: color .2s;
     }
     span {

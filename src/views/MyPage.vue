@@ -3,10 +3,13 @@
     <button @click="btnBack">뒤로가기</button>
     <h1>My Page</h1>
     <div class="imgBlock">
-      <img :src="$store.state.user.photoURL" alt="">
+      <img :src="$store.state.user.photoURL" alt="my photo">
     </div>
     <div class="nameBlock">
       {{ $store.state.user.displayName }}
+    </div>
+    <div>
+      {{ $store.state.user }}
     </div>
   </div>
 </template>

@@ -2,11 +2,8 @@
   <div :class="['formBlock', focusState?'focus':'blur', effChk?'effEnd':'', errChk?'err':'']">
     <span class="title">{{ iptTitle }}</span>
     <input
-      :type="iptType"
-      v-model="vModel"
-      @focus="focusFn"
-      @blur="blurFn($event)"
-      @input="checkExist($event)"
+      :value="value"
+      @input="changeMessage($event)"
     />
     <span class="del" @click="delFn" v-if="delState">
       <em>삭제</em>
@@ -29,187 +26,30 @@
 export default {
   name: 'InputBasic',
   props: [
-    'iptTitle',
-    'iptType'
+    'value'
   ],
   data () {
     return {
       focusState: false,
-      iptLength: '',
-      valType: '',
-      errMsg: '',
-      vModel: '',
-      emailChk: false,
       effChk: false,
       errChk: false,
       delState: false,
-      form: {
-        email: '',
-        password: '',
-        firstName: '',
-        lastName: ''
-      }
+      errMsg: '',
+      iptTitle: '',
+      message: ''
     }
   },
   methods: {
-    init () {
-      if (this.vModel === '') return
-      if (this.vModel.length > 0) {
-        this.iptLength = this.vModel
-        this.vModelChk(this.iptLength)
-      }
-    },
-    focusFn () {
-      this.focusState = true
-      this.effChk = false
-      if (this.iptLength.length > 0) {
-        this.delState = true
-      } else {
-        this.delState = false
-      }
-    },
-    blurFn (event) {
-      // this.effChk = false
-      // this.errChk = false
-      // this.iptLength = event.target.value
-      // this.delState = false
-      if (this.iptTitle === 'FIRST NAME' || this.iptTitle === 'LAST NAME') {
-        if (this.iptLength.length >= 1 && this.iptLength.length <= 10) {
-          this.errMsg = ''
-          this.focusState = false
-          this.effChk = true
-          this.errChk = false
-        }
-      }
-      if (this.iptTitle === 'EMAIL') {
-        if (this.iptLength.length >= 10 && this.emailChk) {
-          this.errMsg = ''
-          this.focusState = false
-          this.effChk = true
-          this.errChk = false
-        }
-      }
-      if (this.iptTitle === 'PASSWORD') {
-        if (this.iptLength.length >= 6 && this.iptLength.length <= 30) {
-          this.errMsg = ''
-          this.focusState = false
-          this.effChk = true
-          this.errChk = false
-        }
-      }
-      if (this.iptLength.length === 0) {
-        this.errMsg = ''
-        this.focusState = false
-        this.effChk = false
-        this.errChk = false
-      }
-      setTimeout(() => {
-        this.delState = false
-      }, 100)
-    },
-    vModelFn () {
-      switch (this.iptTitle) {
-        case 'FIRST NAME' :
-          this.vModel = this.form.firstName
-          return
-        case 'LAST NAME' :
-          this.vModel = this.form.lastName
-          return
-        case 'EMAIL' :
-          this.vModel = this.form.email
-          return
-        case 'PASSWORD' :
-          this.vModel = this.form.password
-          return
-        default :
-          this.vModel = ''
-      }
-    },
-    checkExist (event) {
-      this.iptLength = event.target.value
-      if (this.iptLength.length >= 1) {
-        this.delState = true
-      } else {
-        this.delState = false
-      }
-      this.vModelChk(this.iptLength)
-    },
-    vModelChk (iptL) {
-      if (this.iptTitle === 'FIRST NAME' || this.iptTitle === 'LAST NAME') {
-        if (iptL.length === 0) {
-          this.errMsg = '1글자 이상 입력해주세요'
-          this.focusState = true
-          this.effChk = false
-          this.errChk = true
-        } else if (iptL.length >= 11) {
-          this.errMsg = '10글자 이하로 입력해주세요'
-          this.focusState = true
-          this.effChk = false
-          this.errChk = true
-        } else {
-          this.errMsg = ''
-          this.errChk = false
-        }
-      }
-      if (this.iptTitle === 'EMAIL') {
-        this.CheckEmail(iptL)
-        if (iptL.length < 10) {
-          this.errMsg = '10글자 이상 입력해주세요'
-          this.focusState = true
-          this.effChk = false
-          this.errChk = true
-        } else if (this.emailChk === false) {
-          this.errMsg = 'EMAIL 형식에 맞게 입력해주세요'
-          this.focusState = true
-          this.effChk = false
-          this.errChk = true
-        } else {
-          this.errMsg = ''
-          this.errChk = false
-        }
-      }
-      if (this.iptTitle === 'PASSWORD') {
-        if (iptL.length <= 5) {
-          this.errMsg = '6글자 이상 입력해주세요'
-          this.focusState = true
-          this.effChk = false
-          this.errChk = true
-        } else if (iptL.length >= 31) {
-          this.errMsg = '30글자 이하로 입력해주세요'
-          this.focusState = true
-          this.effChk = false
-          this.errChk = true
-        } else {
-          this.errMsg = ''
-          this.errChk = false
-        }
-      }
-    },
-    CheckEmail (str) {
-      const regEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      if (!regEmail.test(str)) {
-        this.emailChk = false
-      } else {
-        this.emailChk = true
-      }
-    },
-    delFn () {
-      this.errMsg = ''
-      this.iptLength = ''
-      this.vModel = ''
-      this.focusState = false
-      this.effChk = false
-      this.errChk = false
-      this.delState = false
-      console.log('click del')
+    changeMessage (event) {
+      this.message = event.target.value
+      this.$emit('input', this.message)
+      this.$emit('chgEmailLoginRes', this.message)
+      this.$emit('chgEmailSignRes', this.message)
     }
   },
   mounted () {
-    this.vModelFn()
-    // console.log('11 this.vModel.length : ' + this.vModel.length)
-    this.init()
-    // console.log('22 this.vModel : ' + this.vModel)
-    // console.log('33 this.iptLength : ' + this.iptLength)
+  },
+  updated () {
   }
 }
 </script>
@@ -282,6 +122,7 @@ export default {
     }
   }
   .errMsg {
+    display: none;
     position: absolute;
     left: 0;
     bottom: -16px;
@@ -340,6 +181,9 @@ export default {
         background-color: #FF0000;
         transition: width .2s, left .2s;
       }
+    }
+    .errMsg {
+      display: block;
     }
   }
 }
