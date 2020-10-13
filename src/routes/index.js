@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store/store'
 import Main from '../views/Home.vue'
 import About from '../views/About.vue'
 import Notes from '../views/lectures/Notes.vue'
@@ -7,9 +8,15 @@ import Sign from '../views/Sign.vue'
 import Axios from '../views/lectures/Axios.vue'
 import Vuex from '../views/lectures/Vuex.vue'
 import MyPage from '../views/MyPage.vue'
+import UserProfile from '../views/UserProfile.vue'
 import E404 from '../views/e404.vue'
 
 Vue.use(VueRouter)
+
+const levelCheck = (to, from, next) => {
+  if (store.state.claims.level === undefined) next('/UserProfile')
+  next()
+}
 
 const router = new VueRouter({
   mode: 'history',
@@ -17,10 +24,7 @@ const router = new VueRouter({
     {
       path: '/',
       component: Main,
-      beforeEnter: (to, from, next) => {
-        console.log('bf enter')
-        next()
-      }
+      beforeEnter: levelCheck
     },
     {
       path: '/About',
@@ -51,6 +55,11 @@ const router = new VueRouter({
       component: MyPage
     },
     {
+      path: '/UserProfile',
+      name: 'UserProfile',
+      component: UserProfile
+    },
+    {
       path: '/*',
       component: E404
     }
@@ -59,12 +68,8 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   Vue.prototype.$Progress.start()
-  // setTimeout(() => {
-  //   console.log('bf each')
-  //   if (Vue.prototype.$isFirebaseAuth) next()
-  // }, 2000)
   console.log('bf each')
-  if (Vue.prototype.$isFirebaseAuth) next()
+  if (store.state.firebaseLoaded) next()
 })
 router.afterEach((to, from) => {
   Vue.prototype.$Progress.finish()

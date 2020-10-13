@@ -233,6 +233,7 @@ export default {
         locale: 'ko'
       })
       await this.$firebase.auth().signInWithPopup(provider)
+      await this.$firebase.auth().currentUser.getIdToken(true)
     },
     async createWithEmailAndPassword () {
       await this.$firebase.auth().createUserWithEmailAndPassword(this.form.emailSign, this.form.passwordSign)

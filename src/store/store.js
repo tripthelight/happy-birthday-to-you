@@ -7,7 +7,9 @@ export default new Vuex.Store({
   state: {
     title: '원래 제목',
     user: null,
-    token: ''
+    token: '',
+    claims: null,
+    firebaseLoaded: false
   },
   mutations: {
     setTitle (state, p) {
@@ -18,17 +20,23 @@ export default new Vuex.Store({
     },
     setToken (state, token) {
       state.token = token
+    },
+    setClaims (state, claims) {
+      state.claims = claims
+    },
+    setFirebaseLoaded (state) {
+      state.firebaseLoaded = true
     }
   },
   actions: {
-    getUser ({ commit }, user) {
+    async getUser ({ commit }, user) {
+      commit('setFirebaseLoaded')
       commit('setUser', user)
-      if (!user) return
-      user.getIdToken()
-        .then(token => {
-          commit('setToken', token)
-          console.log(user)
-        })
+      if (!user) return false
+      const token = await user.getIdToken()
+      commit('setToken', token)
+      const { claims } = await user.getIdTokenResult()
+      commit('setClaims', claims)
     }
   }
 })

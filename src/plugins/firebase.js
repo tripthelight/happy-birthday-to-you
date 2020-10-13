@@ -14,19 +14,14 @@ firebase.initializeApp(firebaseConfig)
 //   .catch(e => console.error(e))
 
 Vue.prototype.$firebase = firebase
-Vue.prototype.$isFirebaseAuth = false
 
 firebase.auth().onAuthStateChanged((user) => {
-  Vue.prototype.$isFirebaseAuth = true
-  if (user) {
-    // User is signed in.
-    // router.push('/')
-    router.push('/')
-  } else {
-    // No user is signed in.
-    router.push('/Sign')
-  }
-  // console.log(user)
-  // store.commit('setUser', user)
   store.dispatch('getUser', user)
+    .then(() => {
+      if (user) {
+        router.push('/')
+      } else {
+        router.push('/Sign')
+      }
+    })
 })

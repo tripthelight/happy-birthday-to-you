@@ -24,6 +24,9 @@
         <span>Sign Out</span>
       </button>
     </div>
+    <div>
+      {{ JSON.stringify($store.state.claims, null, 2) }}
+    </div>
   </div>
 </template>
 
