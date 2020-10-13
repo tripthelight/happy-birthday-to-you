@@ -216,16 +216,31 @@ export default {
       const provider = new this.$firebase.auth.GoogleAuthProvider()
       this.$firebase.auth().languageCode = 'ko'
       await this.$firebase.auth().signInWithPopup(provider)
+      const user = this.$firebase.auth().currentUser
+      await user.getIdToken()
+      await this.$store.dispatch('getUser', user)
+      if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
+      this.$router.push('/')
     },
     async signInWithFacebook () {
       const provider = new this.$firebase.auth.FacebookAuthProvider()
       this.$firebase.auth().languageCode = 'ko'
       await this.$firebase.auth().signInWithPopup(provider)
+      const user = this.$firebase.auth().currentUser
+      await user.getIdToken()
+      await this.$store.dispatch('getUser', user)
+      if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
+      this.$router.push('/')
     },
     async signInWithTwitter () {
       const provider = new this.$firebase.auth.TwitterAuthProvider()
       this.$firebase.auth().languageCode = 'ko'
       await this.$firebase.auth().signInWithPopup(provider)
+      const user = this.$firebase.auth().currentUser
+      await user.getIdToken()
+      await this.$store.dispatch('getUser', user)
+      if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
+      this.$router.push('/')
     },
     async signInWithApple () {
       const provider = new this.$firebase.auth.OAuthProvider('apple.com')
@@ -234,6 +249,11 @@ export default {
       })
       await this.$firebase.auth().signInWithPopup(provider)
       await this.$firebase.auth().currentUser.getIdToken(true)
+      const user = this.$firebase.auth().currentUser
+      await user.getIdToken()
+      await this.$store.dispatch('getUser', user)
+      if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
+      this.$router.push('/')
     },
     async createWithEmailAndPassword () {
       await this.$firebase.auth().createUserWithEmailAndPassword(this.form.emailSign, this.form.passwordSign)
@@ -241,9 +261,16 @@ export default {
       await user.updateProfile({
         displayName: `${this.form.firstNameSign} ${this.form.lastNameSign}`
       })
+      await this.$firebase.auth().signOut()
+      this.swapJoin()
     },
     async signInWithEmailAndPassword () {
       await this.$firebase.auth().signInWithEmailAndPassword(this.form.emailLogin, this.form.passwordLogin)
+      const user = this.$firebase.auth().currentUser
+      await user.getIdToken()
+      await this.$store.dispatch('getUser', user)
+      if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
+      this.$router.push('/')
     },
     swapJoin () {
       this.swaplogin = !this.swaplogin

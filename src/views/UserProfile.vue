@@ -27,9 +27,11 @@ export default {
       await this.$firebase.auth().signOut().then(() => {
         // Sign-out successful.
         console.log('로그아웃 됨')
+        this.$router.push('/Sign')
       }).catch((error) => {
         // An error happened.
         console.log(error)
+        this.$router.push('/Sign')
       })
     }
   }

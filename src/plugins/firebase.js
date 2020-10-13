@@ -4,7 +4,7 @@ import firebaseConfig from '../../firebaseConfig'
 import 'firebase/auth'
 import 'firebase/firestore'
 import store from '../store/store'
-import router from '../routes/index'
+// import router from '../routes/routes'
 
 firebase.initializeApp(firebaseConfig)
 // firebase.analytics()
@@ -17,11 +17,11 @@ Vue.prototype.$firebase = firebase
 
 firebase.auth().onAuthStateChanged((user) => {
   store.dispatch('getUser', user)
-    .then(() => {
-      if (user) {
-        router.push('/')
-      } else {
-        router.push('/Sign')
-      }
-    })
+// .then(() => {
+//   if (user) {
+//     router.push('/')
+//   } else {
+//     router.push('/Sign')
+//   }
+// })
 })
