@@ -22,6 +22,7 @@ pnpm-debug.log*
 *.sw?
 
 #firebase
+functions
 .firebase
 .firebaserc
 firebaserc.js
