@@ -401,7 +401,14 @@ export default {
     }
   },
   mounted () {
-    this.checkMobile()
+    // const plugin = document.createElement('script')
+    // plugin.setAttribute(
+    //   'src',
+    //   'http://pixelscommander.com/polygon/propeller/dist/propeller.min.js'
+    // )
+    // plugin.async = true
+    // document.head.appendChild(plugin)
+    // this.checkMobile()
   },
   beforeCreate () {
     console.log('beforeCreate')

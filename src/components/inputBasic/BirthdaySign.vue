@@ -1,29 +1,40 @@
 <template>
-  <div :class="['formBlock', focusState?'focus':'blur', effChk?'effEnd':'', errChk?'err':'']">
-    <span class="title">{{ iptTitle }}</span>
-    <div class="inputBlock">
-      <input
-        type="date"
-        :value="value"
-        @input="changeMessage($event)"
-        @focus="focusFn"
-        @blur="blurFn"
-        :max="today"
-      />
-      <span class="bottomLineInit"></span>
-      <span class="bottomLine"></span>
+  <div class="wrap">
+    <!-- 회원가입 입력 필드 -->
+    <div :class="['formBlock', focusState?'focus':'blur', effChk?'effEnd':'', errChk?'err':'']">
+      <span class="title">{{ iptTitle }}</span>
+      <div class="inputBlock">
+        <input
+          type="date"
+          :value="value"
+          @input="changeMessage($event)"
+          @focus="focusFn"
+          @blur="blurFn"
+          :max="today"
+        />
+        <span class="bottomLineInit"></span>
+        <span class="bottomLine"></span>
+      </div>
+      <span class="errMsg">{{ errMsg }}</span>
     </div>
-    <span class="errMsg">{{ errMsg }}</span>
+
+    <!-- 생일 월일 선택 팝업 -->
+    <Popup-Date-Sheet ref="popupDateSteet" />
   </div>
 </template>
 
 <script>
+import PopupDateSheet from '@/components/Popup/PopupDateSheet.vue'
+
 export default {
   name: 'InputBasic',
   props: [
     'value',
     'iptTitle'
   ],
+  components: {
+    PopupDateSheet
+  },
   data () {
     return {
       focusState: false,
@@ -101,151 +112,156 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.formBlock {
-  &:first-of-type {
-    margin: 0 0 0 0;
-  }
-  position: relative;
-  width: 100%;
-  padding: 20px 0 0 0;
-  margin: 9px 0 0 0;
-  span {
-    display: block;
-    &.title {
-      position: absolute;
-      left: 0;
-      top: 24px;
-      font-size: 16px;
-      color: #999;
-      z-index: 1;
-      transition: top .2s, font-size .2s, color .2s;
+.wrap {
+  .formBlock {
+    &:first-of-type {
+      margin: 0 0 0 0;
     }
-    &.bottomLineInit {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 1px;
-      background-color: #999;
-      z-index: 10;
-    }
-    &.bottomLine {
-      position: absolute;
-      left: 50%;
-      bottom: 0;
-      width: 0;
-      height: 1px;
-      background-color: #555;
-      z-index: 10;
-      transition: width .2s, left .2s;
-    }
-  }
-  .inputBlock {
-    input {
-      position: relative;
-      width: 100%;
-      border-radius: 0;
-      border: 0 none;
-      border-bottom: 1px solid #999;
-      padding: 5px 0;
-      font-size: 14px;
-      background-color: transparent;
-      font-size: 14px;
-      min-height: 17px;
-      opacity: 0;
-      z-index: 9;
-      /* &:focus {
-        + span {
-          &.bottomLine {
-            width: 100%;
-            left: 0;
-            background-color: #000;
-            transition: width .2s, left .2s;
-          }
-        }
-      } */
-    }
-  }
-  .errMsg {
-    display: none;
-    position: absolute;
-    left: 0;
-    bottom: -16px;
+    position: relative;
     width: 100%;
-    font-size: 10px;
-    color: #ff0000;
-  }
-  &.focus {
-    .title {
-      top: 8px;
-      font-size: 10px;
-      color: #000;
-      transition: top .2s, font-size .2s, color .2s;
-    }
-    .inputBlock {
-      input {
-        font-size: 14px;
-        opacity: 1;
-      }
-    }
+    padding: 20px 0 0 0;
+    margin: 9px 0 0 0;
     span {
-      &.bottomLine {
-        width: 100%;
+      display: block;
+      &.title {
+        position: absolute;
         left: 0;
-        background-color: #000;
+        top: 24px;
+        font-size: 16px;
+        color: #999;
+        z-index: 1;
+        transition: top .2s, font-size .2s, color .2s;
+      }
+      &.bottomLineInit {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 1px;
+        background-color: #999;
+        z-index: 10;
+      }
+      &.bottomLine {
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        width: 0;
+        height: 1px;
+        background-color: #555;
+        z-index: 10;
         transition: width .2s, left .2s;
       }
     }
-  }
-  &.err {
-    .title {
-      top: 8px;
-      font-size: 10px;
-      color: #FF0000;
-      transition: top .2s, font-size .2s, color .2s;
-    }
     .inputBlock {
       input {
-        opacity: 1;
+        position: relative;
+        width: 100%;
+        border-radius: 0;
+        border: 0 none;
+        border-bottom: 1px solid #999;
+        padding: 5px 0;
+        font-size: 14px;
+        background-color: transparent;
+        font-size: 14px;
+        min-height: 17px;
+        opacity: 0;
+        z-index: 9;
+        /* &:focus {
+          + span {
+            &.bottomLine {
+              width: 100%;
+              left: 0;
+              background-color: #000;
+              transition: width .2s, left .2s;
+            }
+          }
+        } */
       }
     }
     .errMsg {
-      display: block;
+      display: none;
+      position: absolute;
+      left: 0;
+      bottom: -16px;
+      width: 100%;
+      font-size: 10px;
+      color: #ff0000;
     }
-    span {
-      &.bottomLine {
-        width: 100%;
-        left: 0;
-        background-color: #FF0000;
-        transition: width .2s, left .2s;
+    &.focus {
+      .title {
+        top: 8px;
+        font-size: 10px;
+        color: #000;
+        transition: top .2s, font-size .2s, color .2s;
+      }
+      .inputBlock {
+        input {
+          font-size: 14px;
+          opacity: 1;
+        }
+      }
+      span {
+        &.bottomLine {
+          width: 100%;
+          left: 0;
+          background-color: #000;
+          transition: width .2s, left .2s;
+        }
+      }
+    }
+    &.err {
+      .title {
+        top: 8px;
+        font-size: 10px;
+        color: #FF0000;
+        transition: top .2s, font-size .2s, color .2s;
+      }
+      .inputBlock {
+        input {
+          opacity: 1;
+        }
+      }
+      .errMsg {
+        display: block;
+      }
+      span {
+        &.bottomLine {
+          width: 100%;
+          left: 0;
+          background-color: #FF0000;
+          transition: width .2s, left .2s;
+        }
+      }
+    }
+    &.effEnd {
+      .title {
+        top: 8px;
+        font-size: 10px;
+        color: #1e90ff;
+        transition: top .2s, font-size .2s, color .2s;
+      }
+      .inputBlock {
+        input {
+          font-size: 14px;
+          opacity: 1;
+        }
+      }
+      span {
+        &.bottomLine {
+          width: 100%;
+          left: 0;
+          background-color: #1e90ff;
+          transition: width .2s, left .2s;
+        }
+      }
+      .errMsg {
+        display: block;
+        color: #1e90ff;
       }
     }
   }
-  &.effEnd {
-    .title {
-      top: 8px;
-      font-size: 10px;
-      color: #1e90ff;
-      transition: top .2s, font-size .2s, color .2s;
-    }
-    .inputBlock {
-      input {
-        font-size: 14px;
-        opacity: 1;
-      }
-    }
-    span {
-      &.bottomLine {
-        width: 100%;
-        left: 0;
-        background-color: #1e90ff;
-        transition: width .2s, left .2s;
-      }
-    }
-    .errMsg {
-      display: block;
-      color: #1e90ff;
-    }
+  ::v-deep .wrapper {
+    z-index: 1000;
   }
 }
 </style>

@@ -10,6 +10,9 @@ import Vuex from '../views/lectures/Vuex.vue'
 import MyPage from '../views/MyPage.vue'
 import UserProfile from '../views/UserProfile.vue'
 import E404 from '../views/e404.vue'
+import Swiper from '../components/Swiper/Swiper.vue'
+import GSNAP from '../components/GSNAP/GSNAP.vue'
+import Propeller from '../components/Propeller/Propeller.vue'
 
 Vue.use(VueRouter)
 
@@ -118,6 +121,25 @@ const router = new VueRouter({
       path: '/MyPage',
       name: 'MyPage',
       component: MyPage
+    },
+    {
+      path: '/Swiper',
+      name: 'Swiper',
+      component: Swiper
+    },
+    {
+      path: '/GSNAP',
+      name: 'GSNAP',
+      component: GSNAP
+    },
+    {
+      path: '/Propeller',
+      name: 'Propeller',
+      component: Propeller
+    },
+    {
+      path: '/Popup/date/Month',
+      component: () => import('../components/Popup/date/MonthSpin.vue')
     },
     {
       path: '/*',
