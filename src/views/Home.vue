@@ -24,6 +24,10 @@
         <span>Sign Out</span>
       </button>
     </div>
+    <p><button @click="clkLv0">Lv0</button></p>
+    <p><button @click="clkLv1">Lv1</button></p>
+    <p><button @click="clkLv2">Lv2</button></p>
+    <p><button @click="clkAdmin">admin users</button></p>
     <div>
       {{ JSON.stringify($store.state.claims, null, 2) }}
     </div>
@@ -41,6 +45,7 @@ export default {
   methods: {
     async signOut () {
       this.$Progress.start()
+      this.$store.commit('setLoadState', true)
       await this.$firebase.auth().signOut().then(() => {
         // Sign-out successful.
         console.log('로그아웃 됨')
@@ -53,6 +58,18 @@ export default {
     },
     myPage () {
       this.$router.push({ path: 'MyPage' })
+    },
+    clkLv0 () {
+      this.$router.push({ path: '/test/Lv0' })
+    },
+    clkLv1 () {
+      this.$router.push({ path: '/test/Lv1' })
+    },
+    clkLv2 () {
+      this.$router.push({ path: '/test/Lv2' })
+    },
+    clkAdmin () {
+      this.$router.push({ path: '/admin/users' })
     }
   }
 }

@@ -36,7 +36,7 @@ const userCheck = (to, from, next) => {
     if (to.path !== '/Sign') return next('/Sign')
   } else {
     if (!store.state.user.emailVerified) return next('/UserProfile')
-    if (store.state.claims.level > 0) throw Error('사용자만 들어갈 수 있습니다.')
+    if (store.state.claims.level > 1) throw Error('사용자만 들어갈 수 있습니다.')
   }
   next()
 }
@@ -46,13 +46,16 @@ const guestCheck = (to, from, next) => {
   } else {
     // if (!store.state.user.emailVerified) return next('/UserProfile')
     // if (store.state.claims.level > 0) throw Error('손님만 들어갈 수 있습니다.')
-    if (!store.state.user.emailVerified) {
-      if (store.state.claims.level === 1 || store.state.claims.level === 2 || store.state.claims.level === undefined) {
-        if (to.path !== '/UserProfile') return router.push('/UserProfile')
-      }
-    } else if (store.state.claims.level > 0) {
-      throw Error('손님만 들어갈 수 있습니다.')
-    }
+    // if (!store.state.user.emailVerified) {
+    //   if (store.state.claims.level === 1 || store.state.claims.level === 2 || store.state.claims.level === undefined) {
+    //     if (to.path !== '/UserProfile') return router.push('/UserProfile')
+    //   }
+    // } else if (store.state.claims.level > 0) {
+    //   throw Error('손님만 들어갈 수 있습니다.')
+    // }
+
+    if (!store.state.user.emailVerified) return next('/UserProfile')
+    if (store.state.claims.level > 2) throw Error('손님만 들어갈 수 있습니다.')
   }
   next()
 }
@@ -74,6 +77,11 @@ const router = new VueRouter({
         if (store.state.user) return next('/')
         next()
       }
+    },
+    {
+      path: '/admin/users',
+      component: () => import('../views/admin/users.vue'),
+      beforeEnter: guestCheck
     },
     {
       path: '/test/Lv0',
@@ -101,7 +109,8 @@ const router = new VueRouter({
     },
     {
       path: '/About',
-      component: About
+      component: About,
+      beforeEnter: userCheck
     },
     {
       path: '/Notes',
@@ -165,21 +174,25 @@ const waitFirebase = () => {
 
 router.beforeEach((to, from, next) => {
   Vue.prototype.$Progress.start()
+  store.commit('setLoadState', true)
   // console.log('bf each')
   // if (store.state.firebaseLoaded) next()
   waitFirebase()
     .then(() => next())
-    .catch(e => console.log(e))
+    .catch(e => Vue.prototype.$toasted.global.error(e.message))
 })
 
 router.afterEach((to, from) => {
   Vue.prototype.$Progress.finish()
+  store.commit('setLoadState', false)
   console.log('af each')
 })
 
 router.onError(e => {
   Vue.prototype.$Progress.finish()
-  console.error(e)
+  store.commit('setLoadState', false)
+  Vue.prototype.$toasted.global.error(e.message)
+  // console.error(e)
 })
 
 export default router

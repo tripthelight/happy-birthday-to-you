@@ -24,6 +24,7 @@ export default {
     },
     async signOut () {
       this.$Progress.start()
+      this.$store.commit('setLoadState', true)
       await this.$firebase.auth().signOut().then(() => {
         // Sign-out successful.
         console.log('로그아웃 됨')

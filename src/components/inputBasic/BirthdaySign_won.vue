@@ -1,15 +1,17 @@
 <template>
-  <div class="wrap">
+  <div class="wrap" @click="datePopEvt">
     <!-- 회원가입 입력 필드 -->
-    <div
-      :class="['formBlock', focusState?'focus':'blur', effChk?'effEnd':'', errChk?'err':'']"
-      @click="datePopEvt"
-    >
+    <div :class="['formBlock', focusState?'focus':'blur', effChk?'effEnd':'', errChk?'err':'']">
       <span class="title">{{ iptTitle }}</span>
       <div class="inputBlock">
-        <span class="dateBirth">
-          {{ `${$store.state.monthSelect}. ${$store.state.daySelect}` }}
-        </span>
+        <input
+          type="date"
+          :value="value"
+          @input="changeMessage($event)"
+          @focus="focusFn"
+          @blur="blurFn"
+          :max="today"
+        />
         <span class="bottomLineInit"></span>
         <span class="bottomLine"></span>
       </div>
@@ -18,8 +20,8 @@
 
     <!-- 생일 월일 선택 팝업 -->
     <Popup-Date-Sheet
-      v-if="this.$store.state.popBirthState"
-      :class="['popupDateSteet', this.$store.state.popBirthState]"
+      v-if="popState"
+      :class="['popupDateSteet']"
     />
   </div>
 </template>
@@ -45,67 +47,73 @@ export default {
       errMsg: '',
       message: '',
       date: new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate(),
-      today: new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate()
+      today: new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate(),
+      popState: false
     }
   },
   methods: {
     focusFn () {
+      this.focusState = true
+      if (this.message.length < 10) {
+        this.effChk = false
+      } else if (this.message <= this.date) {
+        this.effChk = true
+      }
     },
     blurFn (event) {
+      this.message = event.target.value
+      if (this.message.length < 10) {
+        this.errMsg = '생년월일을 선택해주세요'
+        this.focusState = false
+        this.effChk = false
+        this.errChk = true
+        this.$emit('endStateResBirthdaySign', false)
+        this.$emit('input', this.message)
+        this.$emit('chgBirthdaySignRes', this.message)
+      } else if (this.message <= this.date) {
+        this.errMsg = '생년월일이 입력되었습니다.'
+        this.effChk = true
+        this.errChk = true
+        this.$emit('input', this.message)
+        this.$emit('chgBirthdaySignRes', this.message)
+        this.$emit('endStateResBirthdaySign', true)
+      }
     },
     changeMessage (event) {
+      this.message = event.target.value
+      this.$emit('endStateResBirthdaySign', false)
+      if (this.message.length < 10) {
+        this.errMsg = '생년월일을 선택해주세요'
+        this.effChk = false
+        this.errChk = true
+        this.$emit('endStateResBirthdaySign', false)
+        this.$emit('input', this.message)
+        this.$emit('chgBirthdaySignRes', this.message)
+      } else if (this.message > this.date && this.message.length === 10) {
+        this.errMsg = '오늘 날짜까지만 선택 가능합니다.'
+        this.effChk = false
+        this.errChk = true
+        this.$emit('endStateResBirthdaySign', false)
+        this.$emit('input', this.message)
+        this.$emit('chgBirthdaySignRes', this.message)
+        console.log('오나')
+        console.log('오늘 : ' + this.date)
+      }
+      if (this.message <= this.date && this.message.length === 10) {
+        this.errMsg = '생년월일이 입력되었습니다.'
+        this.effChk = true
+        this.errChk = true
+        this.$emit('input', this.message)
+        this.$emit('chgBirthdaySignRes', this.message)
+        this.$emit('endStateResBirthdaySign', true)
+      }
     },
     datePopEvt () {
-      this.$store.commit('setPopBirthState', true)
+      this.popState = !this.popState
     }
   },
   mounted () {
-    if (this.$store.state.monthSelect > 0 && this.$store.state.daySelect > 0) {
-      this.focusState = true
-      this.effChk = true
-      this.errMsg = '생년월일이 입력되었습니다.'
-      this.message = `${this.$store.state.monthSelect}. ${this.$store.state.daySelect}`
-      this.$emit('chgBirthdaySignRes', this.message)
-      this.$emit('endStateResBirthdaySign', true)
-    } else if (this.$store.state.monthSelect === 0 && this.$store.state.daySelect === 0) {
-      this.focusState = false
-      this.effChk = false
-      this.message = ''
-      this.$emit('endStateResBirthdaySign', false)
-    }
-  },
-  beforeCreate () {
-    console.log('beforeCreate')
-  },
-  created () {
-    console.log('created')
-  },
-  beforeMount () {
-    console.log('beforeMount')
-  },
-  beforeUpdate () {
-    console.log('beforeUpdate')
-  },
-  updated () {
-    if (this.$store.state.monthSelect > 0 && this.$store.state.daySelect > 0) {
-      this.focusState = true
-      this.effChk = true
-      this.errMsg = '생년월일이 입력되었습니다.'
-      this.message = `${this.$store.state.monthSelect}. ${this.$store.state.daySelect}`
-      this.$emit('chgBirthdaySignRes', this.message)
-      this.$emit('endStateResBirthdaySign', true)
-    } else if (this.$store.state.monthSelect === 0 && this.$store.state.daySelect === 0) {
-      this.focusState = false
-      this.effChk = false
-      this.message = ''
-      this.$emit('endStateResBirthdaySign', false)
-    }
-  },
-  beforeDestroy () {
-    console.log('beforeDestroy')
-  },
-  destroyed () {
-    console.log('destroyed')
+    console.log('birthday :' + this.value)
   }
 }
 </script>
@@ -113,10 +121,13 @@ export default {
 <style lang="scss" scoped>
 .wrap {
   .formBlock {
+    &:first-of-type {
+      margin: 0 0 0 0;
+    }
     position: relative;
     width: 100%;
-    padding: 24px 0 0 0;
-    margin: 14px 0 0 0;
+    padding: 20px 0 0 0;
+    margin: 9px 0 0 0;
     span {
       display: block;
       &.title {
@@ -149,7 +160,7 @@ export default {
       }
     }
     .inputBlock {
-      .dateBirth {
+      input {
         position: relative;
         width: 100%;
         border-radius: 0;
@@ -191,7 +202,7 @@ export default {
         transition: top .2s, font-size .2s, color .2s;
       }
       .inputBlock {
-        .dateBirth {
+        input {
           font-size: 14px;
           opacity: 1;
         }
@@ -237,7 +248,7 @@ export default {
         transition: top .2s, font-size .2s, color .2s;
       }
       .inputBlock {
-        .dateBirth {
+        input {
           font-size: 14px;
           opacity: 1;
         }
@@ -260,12 +271,12 @@ export default {
     z-index: 1000;
   }
   .popupDateSteet {
-    // &.hide {
-    //   display: none;
-    // }
-    // &.show {
-    //   display: block;
-    // }
+    &.hide {
+      display: none;
+    }
+    &.show {
+      display: block;
+    }
   }
 }
 </style>

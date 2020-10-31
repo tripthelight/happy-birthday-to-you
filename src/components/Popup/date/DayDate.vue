@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div id="MonthDate"></div>
-    <p class="clsRpm01Month" aria-hidden="true">{{ isAngleRes }}</p>
+    <div id="DayDate"></div>
+    <p class="clsRpm01Day" aria-hidden="true">{{ isAngleRes }}</p>
   </div>
 </template>
 
@@ -41,16 +41,16 @@ export default {
       node.classList.add('box')
       node.setAttribute('data-num', num)
       node.setAttribute('name', 'rdoBirth')
-      node.setAttribute('id', `rdoMonth_${num}`)
+      node.setAttribute('id', `rdoDay_${num}`)
       node.setAttribute('type', 'radio')
       node.setAttribute('value', num)
       var labelRes = document.createElement('LABEL')
-      labelRes.classList.add('boxInLabelMonth')
+      labelRes.classList.add('boxInLabelDay')
       labelRes.setAttribute('for', `rdo_${num}`)
       var textnode = document.createTextNode(num)
       labelRes.appendChild(textnode)
-      var box = document.getElementById('MonthDate').appendChild(node)
-      var labelbox = document.getElementById('MonthDate').appendChild(labelRes)
+      var box = document.getElementById('DayDate').appendChild(node)
+      var labelbox = document.getElementById('DayDate').appendChild(labelRes)
       node.style.cssText = `
         position: absolute;
         display: flex;
@@ -105,15 +105,15 @@ export default {
       })
     },
     initDate () {
-      const monthDate = document.getElementById('MonthDate')
+      const DayDate = document.getElementById('DayDate')
 
       var border = 0
-      var radius = Math.min(window.innerWidth, window.innerHeight) * 0.7 / 2
+      var radius = Math.min(window.innerWidth, window.innerHeight) * 1.6 / 2
       var center = radius - 1 / 2
-      var total = 12
-      var slice = 2 * Math.PI / 12
+      var total = 31
+      var slice = 2 * Math.PI / 31
 
-      TweenLite.set(monthDate, {
+      TweenLite.set(DayDate, {
         width: (radius * 2) - border,
         height: (radius * 2) - border,
         xPercent: -50,
@@ -125,21 +125,21 @@ export default {
       }
     },
     stateChkFn (t) {
-      var slice = 2 * Math.PI / 12
-      var radius = Math.min(window.innerWidth, window.innerHeight) * 0.7 / 2
+      var slice = 2 * Math.PI / 31
+      var radius = Math.min(window.innerWidth, window.innerHeight) * 1.6 / 2
       var center = radius - 1 / 2
-      const rotateTargetMonth = document.getElementById('spinnerWrapMonth')
-      rotateTargetMonth.addEventListener(
+      const rotateTargetDay = document.getElementById('spinnerWrapDay')
+      rotateTargetDay.addEventListener(
         'DOMSubtreeModified',
         () => {
-          t.angStateProps = Math.floor(t.$store.state.angSteDateMonth)
+          t.angStateProps = Math.floor(t.$store.state.angSteDateDay)
           const res = -(t.angStateProps)
           t.rotateFn(res, slice, radius, center)
         }
       )
     },
     rotateFn (a, sliceRes, radiusRes, centerRes) {
-      const r = document.querySelectorAll('.boxInLabelMonth')
+      const r = document.querySelectorAll('.boxInLabelDay')
       for (var i = 0; i < r.length; i++) {
         var angle2 = i * sliceRes
         var x2 = centerRes + radiusRes * Math.sin(angle2)
@@ -154,8 +154,9 @@ export default {
       }
     },
     inputChecked (a) {
-      $('#MonthDate').find('input[type="radio"]').next().click(function () {
-        $(this).closest('#MonthDate').find('label').css({
+      $('#DayDate').find('input[type="radio"]').next().click(function () {
+        console.log('click ================')
+        $(this).closest('#DayDate').find('label').css({
           backgroundColor: '#FFF',
           color: '#000'
         })
@@ -163,7 +164,7 @@ export default {
           backgroundColor: '#000',
           color: '#FFF'
         })
-        a.$store.commit('setMonthSelect', $(this).prev().val())
+        a.$store.commit('setDaySelect', $(this).prev().val())
       })
     }
   },
@@ -176,7 +177,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#MonthDate {
+#DayDate {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -189,28 +190,28 @@ input[type="radio"] {
     }
   }
 }
-.clsRpm01Month,
-.clsRpm02Month,
-.clsRpm03Month,
-.clsRpm04Month {
+.clsRpm01Day,
+.clsRpm02Day,
+.clsRpm03Day,
+.clsRpm04Day {
   display: none;
   position:fixed;
-  right: 0;
+  right:0;
   bottom:-100px;
   width: 100px;
   height: 40px;
-  border: 1px solid #ff0000;
-  z-index: 100000;
-  font-size: 0;
+  border:1px solid #ff0000;
+  z-index:100000;
+  font-size:20px;
   color:#000;
 }
-.clsRpm02Month {
+.clsRpm02Day {
   bottom:-140px;
 }
-.clsRpm03Month {
+.clsRpm03Day {
   bottom:-180px;
 }
-.clsRpm04Month {
+.clsRpm04Day {
   bottom:-220px;
 }
 </style>

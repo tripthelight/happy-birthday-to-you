@@ -5,12 +5,20 @@
       <div class="dateMonth">
         <Month-Spin></Month-Spin>
       </div>
+      <div class="dateDay">
+        <Day-Spin></Day-Spin>
+      </div>
+      <button
+        class="btnClose"
+        @click="popClose"
+      >닫기</button>
     </div>
   </div>
 </template>
 
 <script>
 import MonthSpin from '@/components/Popup/date/MonthSpin'
+import DaySpin from '@/components/Popup/date/DaySpin'
 export default {
   name: 'PopupDateSheet',
   data () {
@@ -18,7 +26,14 @@ export default {
     }
   },
   components: {
-    MonthSpin
+    MonthSpin,
+    DaySpin
+  },
+  methods: {
+    popClose () {
+      this.$store.commit('setPopBirthState', false)
+      console.log(this.$store.state.popBirthState)
+    }
   },
   computed: {
   },
@@ -39,17 +54,23 @@ export default {
       height: 100%;
       background-color: transparent;
       z-index: 1001;
-      .dateMonth {
+      .dateMonth,
+      .dateDay {
         background-color: #FFF;
+        position: fixed;
+        border-radius: 100%;
       }
       .dateMonth {
-        position: fixed;
         left: -35%;
         top: -20%;
-        width: 120vw;
-        height: 120vw;
-        border-radius: 100%;
-        background-color: #FFF;
+        width: 100vw;
+        height: 100vw;
+      }
+      .dateDay {
+        right: -74%;
+        bottom: -55%;
+        width: 190vw;
+        height: 190vw;
       }
     }
   }
@@ -63,6 +84,17 @@ export default {
     box-sizing: border-box;
     z-index: 1000;
     background-color: rgba(0,0,0,.8);
+  }
+  .btnClose {
+    position: fixed;
+    right: 24px;
+    top: 24px;
+    width: 32px;
+    height: 32px;
+    background-color: #fff;
+    border: 0 none;
+    border-radius: 100%;
+    font-size: 0;
   }
 }
 ::v-deep .swiper-container {

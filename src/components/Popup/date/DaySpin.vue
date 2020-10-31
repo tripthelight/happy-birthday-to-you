@@ -1,19 +1,19 @@
 <template>
   <div class="propeller month">
-    <div id="spinnerWrapMonth">
-      <Month-Date :isAngleRes="angleState"></Month-Date>
+    <div id="spinnerWrapDay">
+      <Day-Date :isAngleRes="angleState"></Day-Date>
     </div>
   </div>
 </template>
 
 <script>
-import MonthDate from '@/components/Popup/date/MonthDate'
+import DayDate from '@/components/Popup/date/DayDate'
 import pro from '@/plugins/pro'
 
 export default {
-  name: 'Month',
+  name: 'Day',
   components: {
-    MonthDate
+    DayDate
   },
   props: ['pdata'],
   data () {
@@ -24,13 +24,13 @@ export default {
   },
   methods: {
     async proFn (a) {
-      var propeller = await new pro.Propeller(document.getElementById('spinnerWrapMonth'), {
+      var propeller = await new pro.Propeller(document.getElementById('spinnerWrapDay'), {
         inertia: 0.89,
         angle: 0,
         speed: 15,
         onRotate: function () {
           a.angleState = Math.floor(this.angle)
-          a.$store.commit('setAngStateMonth', this.angle)
+          a.$store.commit('setAngStateDay', this.angle)
         }
       })
       propeller.bind()
@@ -43,12 +43,12 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-#spinnerWrapMonth {
+#spinnerWrapDay {
   position: fixed;
-  left: -35%;
-  top: -20%;
-  width: 100vw;
-  height: 100vw;
+  right: -74%;
+  bottom: -55%;
+  width: 190vw;
+  height: 190vw;
   border-radius: 100%;
   background-color: #FFF;
 }
