@@ -20,3 +20,8 @@ button {
     background-color: transparent;
     border: 0 none;
 }
+
+/* background-color */
+.bgFFFF00 {
+    background-color: #FFFF00;
+}

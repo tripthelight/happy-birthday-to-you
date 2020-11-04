@@ -1,5 +1,7 @@
 <template>
-  <div :class="['formBlock', focusState?'focus':'blur', effChk?'effEnd':'', errChk?'err':'']">
+  <div
+    :class="['formBlock', focusState?'focus':'blur', effChk?'effEnd':'', errChk?'err':'']"
+  >
     <span class="title">{{ iptTitle }}</span>
     <div class="inputBlock">
       <input
@@ -32,7 +34,8 @@ export default {
   name: 'EmailLogin',
   props: [
     'value',
-    'iptTitle'
+    'iptTitle',
+    'chgEmailLoginInit'
   ],
   data () {
     return {
@@ -75,7 +78,7 @@ export default {
     },
     changeMessage (event) {
       this.message = event.target.value
-      console.log('this.message.length : ' + this.message.length)
+      // console.log('this.message.length : ' + this.message.length)
       if (this.message.length < 10) {
         this.errChk = true
         this.effChk = false
@@ -158,30 +161,36 @@ export default {
   },
   mounted () {
     // this.changeMessage(this.value)
-    console.log('input mounted')
-    console.log('this.value : ' + this.value)
     this.initMessage(this.value)
   },
+  watch: {
+    chgEmailLoginInit (newVal, oldVal) {
+      if (newVal) {
+        this.delFn()
+        this.$emit('chgEmailLoginInitRes', false)
+      }
+    }
+  },
   beforeCreate () {
-    console.log('input beforeCreate')
+    // console.log('input beforeCreate')
   },
   created () {
-    console.log('input created')
+    // console.log('input created')
   },
   beforeMount () {
-    console.log('input beforeMount')
+    // console.log('input beforeMount')
   },
   beforeUpdate () {
-    console.log('input beforeUpdate')
+    // console.log('input beforeUpdate')
   },
   updated () {
-    console.log('input updated')
+    // console.log('input updated')
   },
   beforeDestroy () {
-    console.log('input beforeDestroy')
+    // console.log('input beforeDestroy')
   },
   destroyed () {
-    console.log('input destroyed')
+    // console.log('input destroyed')
   }
 }
 </script>

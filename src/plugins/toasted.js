@@ -17,3 +17,10 @@ Vue.toasted.register('error', (payload) => {
     }
   }
 })
+
+Vue.toasted.register('loginError', (payload) => {
+  return payload
+}, {
+  position: 'bottom-center',
+  duration: 5000
+})

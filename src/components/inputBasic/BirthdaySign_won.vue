@@ -96,8 +96,8 @@ export default {
         this.$emit('endStateResBirthdaySign', false)
         this.$emit('input', this.message)
         this.$emit('chgBirthdaySignRes', this.message)
-        console.log('오나')
-        console.log('오늘 : ' + this.date)
+        // console.log('오나')
+        // console.log('오늘 : ' + this.date)
       }
       if (this.message <= this.date && this.message.length === 10) {
         this.errMsg = '생년월일이 입력되었습니다.'
@@ -113,7 +113,7 @@ export default {
     }
   },
   mounted () {
-    console.log('birthday :' + this.value)
+    // console.log('birthday :' + this.value)
   }
 }
 </script>

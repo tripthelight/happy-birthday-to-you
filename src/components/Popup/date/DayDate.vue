@@ -155,7 +155,7 @@ export default {
     },
     inputChecked (a) {
       $('#DayDate').find('input[type="radio"]').next().click(function () {
-        console.log('click ================')
+        // console.log('click ================')
         $(this).closest('#DayDate').find('label').css({
           backgroundColor: '#FFF',
           color: '#000'

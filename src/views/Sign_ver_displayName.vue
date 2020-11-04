@@ -8,16 +8,12 @@
         iptTitle="EMAIL"
         @chgEmailLoginRes="chgEmailLogin"
         @endStateResEmailLogin="esEmailLogin"
-        :chgEmailLoginInit="chgEmailLoginInit"
-        @chgEmailLoginInitRes="chgEmailLoginInitRes"
       />
       <Password-Login
         v-model="form.passwordLogin"
         iptTitle="PASSWORD"
         @chgPassLoginRes="chgPassLogin"
         @endStateResPassLogin="esPassLogin"
-        :chgPassLoginInit="chgPassLoginInit"
-        @chgPassLoginInitRes="chgPassLoginInitRes"
       />
     </div>
 
@@ -28,16 +24,12 @@
         iptTitle="EMAIL"
         @chgEmailSignRes="chgEmailSign"
         @endStateResEmailSign="esEmailSign"
-        :chgEmailSignInit="chgEmailSignInit"
-        @chgEmailSignInitRes="chgEmailSignInitRes"
       />
       <Password-Sign
         v-model="form.passwordSign"
         iptTitle="PASSWORD"
         @chgPassSignRes="chgPassSign"
         @endStateResPassSign="esPassSign"
-        :chgPassSignInit="chgPassSignInit"
-        @chgPassSignInitRes="chgPassSignInitRes"
       />
       <First-Name-Sign
         v-model="form.firstNameSign"
@@ -62,13 +54,10 @@
     <!-- login info -->
     <div class="bottomWrap">
       <div class="fromWrap">
-        <!-- <div class="formBlock" v-if="!swaplogin">
-          <input
-            type="checkbox"
-            id="loginSaveInfo"
-          />
+        <div class="formBlock" v-if="!swaplogin">
+          <input type="checkbox" id="loginSaveInfo" />
           <label for="loginSaveInfo">로그인 정보 저장</label>
-        </div> -->
+        </div>
         <div class="btnJoin">
           <button @click="swapJoin">{{ swapTitle }}</button>
         </div>
@@ -138,12 +127,6 @@
         </button>
       </div>
     </div>
-
-    <Modal
-      :popModalState="popModalState"
-      :titleState="titleState"
-      @close="popModalState = false"
-    ></Modal>
   </div>
 </template>
 
@@ -155,7 +138,6 @@ import PasswordSign from '@/components/inputBasic/PasswordSign.vue'
 import FirstNameSign from '@/components/inputBasic/FirstNameSign.vue'
 import LastNameSign from '@/components/inputBasic/LastNameSign.vue'
 import BirthdaySign from '@/components/inputBasic/BirthdaySign.vue'
-import Modal from '@/components/Popup/Modal.vue'
 
 export default {
   name: 'Sign',
@@ -166,8 +148,7 @@ export default {
     PasswordSign,
     FirstNameSign,
     LastNameSign,
-    BirthdaySign,
-    Modal
+    BirthdaySign
   },
   data () {
     return {
@@ -179,12 +160,6 @@ export default {
       swapTitle: '회원가입',
       btnSignInDisabled: true,
       btnLogInDisabled: true,
-      popModalState: false,
-      titleState: '',
-      chgEmailLoginInit: false,
-      chgPassLoginInit: false,
-      chgEmailSignInit: false,
-      chgPassSignInit: false,
       formStateLogin: {
         emailLogin: false,
         passwordLogin: false
@@ -219,119 +194,73 @@ export default {
   },
   methods: {
     async signInWithGoogle () {
-      this.$Progress.start()
-      this.$store.commit('setLoadState', true)
       const provider = new this.$firebase.auth.GoogleAuthProvider()
       this.$firebase.auth().languageCode = 'en'
       await this.$firebase.auth().signInWithPopup(provider)
       const user = this.$firebase.auth().currentUser
-      if (user.email === undefined || user.email === null) {
-        this.$Progress.finish()
-        this.$store.commit('setLoadState', false)
-        this.emailChkState()
-      } else {
-        await user.getIdToken()
-        await this.$store.dispatch('getUser', user)
-        if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
-        this.$router.push('/')
-      }
+      await user.getIdToken()
+      await this.$store.dispatch('getUser', user)
+      if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
+      this.$router.push('/')
     },
     async signInWithFacebook () {
-      this.$Progress.start()
-      this.$store.commit('setLoadState', true)
       const provider = new this.$firebase.auth.FacebookAuthProvider()
       this.$firebase.auth().languageCode = 'en'
       await this.$firebase.auth().signInWithPopup(provider)
       const user = this.$firebase.auth().currentUser
-      if (user.email === undefined || user.email === null) {
-        this.$Progress.finish()
-        this.$store.commit('setLoadState', false)
-        this.emailChkState()
-      } else {
-        await user.getIdToken()
-        await this.$store.dispatch('getUser', user)
-        if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
-        this.$router.push('/')
-      }
+      await user.getIdToken()
+      await this.$store.dispatch('getUser', user)
+      if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
+      this.$router.push('/')
     },
     async signInWithTwitter () {
-      this.$Progress.start()
-      this.$store.commit('setLoadState', true)
       const provider = new this.$firebase.auth.TwitterAuthProvider()
       this.$firebase.auth().languageCode = 'en'
       await this.$firebase.auth().signInWithPopup(provider)
       const user = this.$firebase.auth().currentUser
-      if (user.email === undefined || user.email === null) {
-        this.$Progress.finish()
-        this.$store.commit('setLoadState', false)
-        this.emailChkState()
-      } else {
-        await user.getIdToken()
-        await this.$store.dispatch('getUser', user)
-        if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
-        this.$router.push('/')
-      }
+      await user.getIdToken()
+      await this.$store.dispatch('getUser', user)
+      if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
+      this.$router.push('/')
     },
     async signInWithApple () {
-      this.$Progress.start()
-      this.$store.commit('setLoadState', true)
       const provider = new this.$firebase.auth.OAuthProvider('apple.com')
       provider.setCustomParameters({
-        locale: 'en'
+        locale: 'ko'
       })
       await this.$firebase.auth().signInWithPopup(provider)
       await this.$firebase.auth().currentUser.getIdToken(true)
       const user = this.$firebase.auth().currentUser
-      if (user.email === undefined || user.email === null) {
-        this.$Progress.finish()
-        this.$store.commit('setLoadState', false)
-        this.emailChkState()
-      } else {
-        await user.getIdToken()
-        await this.$store.dispatch('getUser', user)
-        if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
-        this.$router.push('/')
-      }
+      await user.getIdToken()
+      await this.$store.dispatch('getUser', user)
+      if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
+      this.$router.push('/')
     },
     async createWithEmailAndPassword () {
       this.$Progress.start()
       this.$store.commit('setLoadState', true)
-      this.$firebase.auth().createUserWithEmailAndPassword(this.form.emailSign, this.form.passwordSign)
-        .then(async () => {
-          const user = this.$firebase.auth().currentUser
-          user.updateProfile({
-            displayName: `${this.form.firstNameSign} ${this.form.lastNameSign}`
-          })
-          this.$firebase.auth().languageCode = 'en'
-          await user.sendEmailVerification()
-          await this.$firebase.auth().signOut()
-          await this.swapJoin()
-        })
-        .catch(err => {
-          this.$Progress.finish()
-          this.$store.commit('setLoadState', false)
-          this.iptBinInit()
-          if (err.code === 'auth/email-already-in-use') return this.emailSignChkState()
-        })
+      await this.$firebase.auth().createUserWithEmailAndPassword(this.form.emailSign, this.form.passwordSign)
+      const user = this.$firebase.auth().currentUser
+      user.updateProfile({
+        displayName: `${this.form.firstNameSign} ${this.form.lastNameSign}`
+      })
+      // await this.$store.dispatch('getUser', user)
+      await this.$firebase.firestore().collection('users').doc(user.uid).set({
+        displayName: `${this.form.firstNameSign} ${this.form.lastNameSign}`
+      }, { merge: true })
+      // await this.$firebase.firestore().collection('birthday').doc(user.uid).set({
+      //   birthdaySign: this.form.birthdaySign
+      // })
+      await this.$firebase.auth().signOut()
+      await this.swapJoin()
     },
     async signInWithEmailAndPassword () {
-      this.$Progress.start()
-      this.$store.commit('setLoadState', true)
       await this.$firebase.auth().signInWithEmailAndPassword(this.form.emailLogin, this.form.passwordLogin)
-        .then(async () => {
-          const user = this.$firebase.auth().currentUser
-          await user.getIdToken()
-          await this.$store.dispatch('getUser', user)
-          if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
-          this.$router.push('/')
-        })
-        .catch(err => {
-          this.$Progress.finish()
-          this.$store.commit('setLoadState', false)
-          this.iptBinInit()
-          if (err.code === 'auth/user-not-found') return this.emailLoginChkState()
-          if (err.code === 'auth/wrong-password') return this.passwordChkState()
-        })
+      const user = this.$firebase.auth().currentUser
+      await user.getIdToken()
+      await this.$store.dispatch('getUser', user)
+      if (this.$store.state.claims.level === undefined) return this.$router.push('/UserProfile')
+      this.$router.push('/')
     },
     swapJoin () {
       this.$Progress.finish()
@@ -368,36 +297,17 @@ export default {
         this.form.birthdaySign = ''
       }
     },
-    iptBinInit () {
-      // this.form.emailLogin = ''
-      this.chgEmailLoginInit = true
-      this.chgPassLoginInit = true
-      this.chgEmailSignInit = true
-      this.chgPassSignInit = true
-    },
     chgEmailLogin (value) {
       this.form.emailLogin = value
-    },
-    chgEmailLoginInitRes (value) {
-      this.chgEmailLoginInit = value
     },
     chgPassLogin (value) {
       this.form.passwordLogin = value
     },
-    chgPassLoginInitRes (value) {
-      this.chgPassLoginInit = value
-    },
     chgEmailSign (value) {
       this.form.emailSign = value
     },
-    chgEmailSignInitRes (value) {
-      this.chgEmailSignInit = value
-    },
     chgPassSign (value) {
       this.form.passwordSign = value
-    },
-    chgPassSignInitRes (value) {
-      this.chgPassSignInit = value
     },
     chgFirstNameSign (value) {
       this.form.firstNameSign = value
@@ -482,26 +392,9 @@ export default {
         this.stateOther = true
         return 'other'
       }
-    },
-    emailChkState () {
-      this.titleState = '가입하신 계정에 이메일이 존재하지 않습니다. 다른 계정으로 로그인해 주세요.'
-      this.popModalState = true
-    },
-    emailLoginChkState () {
-      this.titleState = '이메일이 존재하지 않습니다.'
-      this.popModalState = true
-    },
-    passwordChkState () {
-      this.titleState = '비밀번호가 일치하지 않습니다.'
-      this.popModalState = true
-    },
-    emailSignChkState () {
-      this.titleState = '이미 가입하신 이메일입니다.'
-      this.popModalState = true
     }
   },
   mounted () {
-    // this.$store.state.claims.emailVerified ? this.emailState = true : this.emailState = false
     // const plugin = document.createElement('script')
     // plugin.setAttribute(
     //   'src',
@@ -601,30 +494,6 @@ export default {
         }
       }
     }
-  }
-  .signMsg {
-    animation-duration: 3s;
-    animation-name: aniSignCheck;
-    &.signOk {
-      display: block;
-    }
-    &.signNot {
-      display: none;
-    }
-  }
-}
-@keyframes aniSignCheck {
-  0% {
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
   }
 }
 </style>

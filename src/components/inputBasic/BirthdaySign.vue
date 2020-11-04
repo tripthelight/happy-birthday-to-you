@@ -75,16 +75,16 @@ export default {
     }
   },
   beforeCreate () {
-    console.log('beforeCreate')
+    // console.log('beforeCreate')
   },
   created () {
-    console.log('created')
+    // console.log('created')
   },
   beforeMount () {
-    console.log('beforeMount')
+    // console.log('beforeMount')
   },
   beforeUpdate () {
-    console.log('beforeUpdate')
+    // console.log('beforeUpdate')
   },
   updated () {
     if (this.$store.state.monthSelect > 0 && this.$store.state.daySelect > 0) {
@@ -102,10 +102,10 @@ export default {
     }
   },
   beforeDestroy () {
-    console.log('beforeDestroy')
+    // console.log('beforeDestroy')
   },
   destroyed () {
-    console.log('destroyed')
+    // console.log('destroyed')
   }
 }
 </script>

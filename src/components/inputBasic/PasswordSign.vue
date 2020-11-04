@@ -32,7 +32,8 @@ export default {
   name: 'PasswordSign',
   props: [
     'value',
-    'iptTitle'
+    'iptTitle',
+    'chgPassSignInit'
   ],
   data () {
     return {
@@ -146,6 +147,14 @@ export default {
   },
   mounted () {
     this.initMessage(this.value)
+  },
+  watch: {
+    chgPassSignInit (newVal, oldVal) {
+      if (newVal) {
+        this.delFn()
+        this.$emit('chgPassSignInitRes', false)
+      }
+    }
   }
 }
 </script>

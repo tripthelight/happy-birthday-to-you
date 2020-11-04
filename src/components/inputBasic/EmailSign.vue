@@ -32,7 +32,8 @@ export default {
   name: 'EmailSign',
   props: [
     'value',
-    'iptTitle'
+    'iptTitle',
+    'chgEmailSignInit'
   ],
   data () {
     return {
@@ -157,6 +158,14 @@ export default {
   },
   mounted () {
     this.initMessage(this.value)
+  },
+  watch: {
+    chgEmailSignInit (newVal, oldVal) {
+      if (newVal) {
+        this.delFn()
+        this.$emit('chgEmailSignInitRes', false)
+      }
+    }
   }
 }
 </script>

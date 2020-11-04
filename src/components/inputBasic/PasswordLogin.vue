@@ -32,7 +32,8 @@ export default {
   name: 'PasswordLogin',
   props: [
     'value',
-    'iptTitle'
+    'iptTitle',
+    'chgPassLoginInit'
   ],
   data () {
     return {
@@ -146,6 +147,14 @@ export default {
   },
   mounted () {
     this.initMessage(this.value)
+  },
+  watch: {
+    chgPassLoginInit (newVal, oldVal) {
+      if (newVal) {
+        this.delFn()
+        this.$emit('chgPassLoginInitRes', false)
+      }
+    }
   }
 }
 </script>

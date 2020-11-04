@@ -7,8 +7,8 @@
       <router-view></router-view>
       <vue-progress-bar></vue-progress-bar>
       <!-- <div v-if="!$isFirebaseAuth">로딩중</div> -->
-      <div class="lodingWrap loding" v-if="$store.state.loadState"><span>로딩중</span></div>
-      <div class="lodingWrap loadEnd" v-if="!$store.state.loadState"><span>로딩끝</span></div>
+      <div class="lodingWrap loding" v-if="$store.state.loadState"><span>로딩중11</span></div>
+      <div class="lodingWrap loadEnd" v-if="!$store.state.loadState"><span>로딩끝11</span></div>
     </div>
     <!-- <p>{{ $store.state.user ? $store.state.user.displayName : '아직 로그인 안함' }}</p>
     <p>{{ $store.state.token ? $store.state.token : '아직 로그인 안함' }}</p> -->

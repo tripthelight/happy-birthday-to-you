@@ -17,11 +17,18 @@ Vue.prototype.$firebase = firebase
 
 firebase.auth().onAuthStateChanged((user) => {
   store.dispatch('getUser', user)
-// .then(() => {
-//   if (user) {
-//     router.push('/')
-//   } else {
-//     router.push('/Sign')
-//   }
-// })
+    .then(() => {
+      if (user) {
+        if (user.email === null || user.email === undefined) {
+          user.delete()
+          firebase.firestore().collection('users').doc(user.uid).delete()
+        } else {
+          firebase.firestore().collection('users').doc(user.uid).set({
+            displayName: user.displayName
+          }, { merge: true })
+        }
+      } else {
+        console.log('login out?')
+      }
+    })
 })

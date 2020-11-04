@@ -165,17 +165,17 @@ export default {
   methods: {
     async signInWithGoogle () {
       const provider = new this.$firebase.auth.GoogleAuthProvider()
-      this.$firebase.auth().languageCode = 'ko'
+      this.$firebase.auth().languageCode = 'en'
       await this.$firebase.auth().signInWithPopup(provider)
     },
     async signInWithFacebook () {
       const provider = new this.$firebase.auth.FacebookAuthProvider()
-      this.$firebase.auth().languageCode = 'ko'
+      this.$firebase.auth().languageCode = 'en'
       await this.$firebase.auth().signInWithPopup(provider)
     },
     async signInWithTwitter () {
       const provider = new this.$firebase.auth.TwitterAuthProvider()
-      this.$firebase.auth().languageCode = 'ko'
+      this.$firebase.auth().languageCode = 'en'
       await this.$firebase.auth().signInWithPopup(provider)
     },
     async signInWithApple () {
@@ -262,21 +262,21 @@ export default {
       const varUA = navigator.userAgent.toLowerCase()
       if (varUA.indexOf('android') > -1) {
         // 안드로이드
-        console.log('android')
+        // console.log('android')
         this.stateIOS = false
         this.stateOther = false
         this.stateAndroid = true
         return 'android'
       } else if (varUA.indexOf('iphone') > -1 || varUA.indexOf('ipad') > -1 || varUA.indexOf('ipod') > -1) {
         // IOS
-        console.log('ios')
+        // console.log('ios')
         this.stateOther = false
         this.stateAndroid = false
         this.stateIOS = true
         return 'ios'
       } else {
         // 아이폰, 안드로이드 외
-        console.log('other')
+        // console.log('other')
         this.stateAndroid = false
         this.stateIOS = false
         this.stateOther = true
@@ -288,26 +288,26 @@ export default {
     this.checkMobile()
   },
   beforeCreate () {
-    console.log('beforeCreate')
+    // console.log('beforeCreate')
   },
   created () {
-    console.log('created')
+    // console.log('created')
   },
   beforeMount () {
-    console.log('beforeMount')
+    // console.log('beforeMount')
   },
   beforeUpdate () {
-    console.log('beforeUpdate')
+    // console.log('beforeUpdate')
   },
   updated () {
     this.effInterval()
-    console.log('updated')
+    // console.log('updated')
   },
   beforeDestroy () {
-    console.log('beforeDestroy')
+    // console.log('beforeDestroy')
   },
   destroyed () {
-    console.log('destroyed')
+    // console.log('destroyed')
   }
 }
 </script>

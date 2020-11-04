@@ -40,7 +40,7 @@ const userCheck = (to, from, next) => {
   }
   next()
 }
-const guestCheck = (to, from, next) => {
+const guestCheck = async (to, from, next) => {
   if (!store.state.user) {
     if (to.path !== '/Sign') return next('/Sign')
   } else {
@@ -53,13 +53,14 @@ const guestCheck = (to, from, next) => {
     // } else if (store.state.claims.level > 0) {
     //   throw Error('손님만 들어갈 수 있습니다.')
     // }
-
-    if (!store.state.user.emailVerified) return next('/UserProfile')
+    // if (!store.state.user.emailVerified) return next('/UserProfile')
+    if (!store.state.user.emailVerified) {
+      return router.push('/UserProfile')
+    }
     if (store.state.claims.level > 2) throw Error('손님만 들어갈 수 있습니다.')
   }
   next()
 }
-
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -74,6 +75,8 @@ const router = new VueRouter({
       name: 'Sign',
       component: Sign,
       beforeEnter: (to, from, next) => {
+        Vue.prototype.$Progress.start()
+        store.commit('setLoadState', true)
         if (store.state.user) return next('/')
         next()
       }
@@ -175,7 +178,7 @@ const waitFirebase = () => {
 router.beforeEach((to, from, next) => {
   Vue.prototype.$Progress.start()
   store.commit('setLoadState', true)
-  // console.log('bf each')
+  console.log('bf each')
   // if (store.state.firebaseLoaded) next()
   waitFirebase()
     .then(() => next())

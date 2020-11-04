@@ -32,7 +32,7 @@ export default {
   methods: {
     popClose () {
       this.$store.commit('setPopBirthState', false)
-      console.log(this.$store.state.popBirthState)
+      // console.log(this.$store.state.popBirthState)
     }
   },
   computed: {

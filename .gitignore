@@ -27,3 +27,4 @@ functions
 .firebaserc
 firebaserc.js
 firebaseConfig.js
+*.log

@@ -53,13 +53,13 @@ export default {
       const snapshot = await citiesRef.get()
       this.items = []
       snapshot.forEach(doc => {
-        console.log(doc.id, '=>', doc.data())
+        // console.log(doc.id, '=>', doc.data())
         const { title, content } = doc.data()
         this.items.push({
           title, content, id: doc.id
         })
       })
-      console.log(snapshot)
+      // console.log(snapshot)
     },
     async put (id) {
       const r = await this.$firebase.firestore().collection('notes').doc(id).set({

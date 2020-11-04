@@ -28,9 +28,9 @@
     <p><button @click="clkLv1">Lv1</button></p>
     <p><button @click="clkLv2">Lv2</button></p>
     <p><button @click="clkAdmin">admin users</button></p>
-    <div>
+    <!-- <div>
       {{ JSON.stringify($store.state.claims, null, 2) }}
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -48,7 +48,7 @@ export default {
       this.$store.commit('setLoadState', true)
       await this.$firebase.auth().signOut().then(() => {
         // Sign-out successful.
-        console.log('로그아웃 됨')
+        // console.log('로그아웃 됨')
         this.$router.push('/Sign')
       }).catch((error) => {
         // An error happened.
